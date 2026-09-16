@@ -27,4 +27,9 @@ public interface StockRepository
     );
 
 
+    List<Stock> findByCantidadLessThanEqual(
+            Integer stockMinimo
+    );
+
+
 }

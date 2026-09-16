@@ -3,27 +3,16 @@ package com.fersal.fersal.cliente.pago.service;
 
 import com.fersal.fersal.cliente.cuenta.entity.CuentaCorriente;
 import com.fersal.fersal.cliente.cuenta.repository.CuentaCorrienteRepository;
-
-
-import com.fersal.fersal.cliente.pago.dto.*;
+import com.fersal.fersal.cliente.entity.Cliente;
+import com.fersal.fersal.cliente.pago.dto.PagoClienteRequest;
+import com.fersal.fersal.cliente.pago.dto.PagoClienteResponse;
 import com.fersal.fersal.cliente.pago.entity.PagoCliente;
 import com.fersal.fersal.cliente.pago.repository.PagoClienteRepository;
-
-
-import com.fersal.fersal.cliente.entity.Cliente;
 import com.fersal.fersal.cliente.repository.ClienteRepository;
-
-
 import com.fersal.fersal.empresa.repository.EmpresaRepository;
-
-
 import lombok.RequiredArgsConstructor;
-
-
 import org.springframework.stereotype.Service;
 
-
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,6 +49,14 @@ public class PagoClienteServiceImpl
 
                 .cliente(
                         pago.getCliente().getNombre()
+                )
+
+                .apellido(
+                        pago.getCliente().getApellido()
+                )
+
+                .telefono(
+                        pago.getCliente().getTelefono()
                 )
 
                 .monto(

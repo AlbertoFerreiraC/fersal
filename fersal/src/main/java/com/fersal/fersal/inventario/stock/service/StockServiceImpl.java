@@ -5,25 +5,16 @@ import com.fersal.fersal.catalogo.producto.repository.ProductoRepository;
 import com.fersal.fersal.empresa.repository.EmpresaRepository;
 import com.fersal.fersal.inventario.movimiento.entity.MovimientoStock;
 import com.fersal.fersal.inventario.movimiento.repository.MovimientoStockRepository;
-import com.fersal.fersal.security.repository.UsuarioRepository;
-import com.fersal.fersal.sucursal.repository.SucursalRepository;
-
-
 import com.fersal.fersal.inventario.stock.dto.StockRequest;
 import com.fersal.fersal.inventario.stock.dto.StockResponse;
-
 import com.fersal.fersal.inventario.stock.entity.Stock;
-
 import com.fersal.fersal.inventario.stock.mapper.StockMapper;
 import com.fersal.fersal.inventario.stock.repository.StockRepository;
-
-
+import com.fersal.fersal.security.repository.UsuarioRepository;
+import com.fersal.fersal.sucursal.repository.SucursalRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
-
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.UUID;
@@ -54,26 +45,57 @@ public class StockServiceImpl implements StockService {
             StockRequest request
     ) {
 
+        if (
+                repository.findBySucursalIdAndProductoId(
+                        request.getSucursalId(),
+                        request.getProductoId()
+                ).isPresent()
+        ) {
+
+            throw new RuntimeException(
+                    "El producto ya existe en esta sucursal"
+            );
+
+        }
+
+
+        var empresa = empresaRepository.findById(
+                request.getEmpresaId()
+        ).orElseThrow(
+                () -> new RuntimeException(
+                        "Empresa no encontrada: "
+                                + request.getEmpresaId()
+                )
+        );
+
+
+        var sucursal = sucursalRepository.findById(
+                request.getSucursalId()
+        ).orElseThrow(
+                () -> new RuntimeException(
+                        "Sucursal no encontrada: "
+                                + request.getSucursalId()
+                )
+        );
+
+
+        var producto = productoRepository.findById(
+                request.getProductoId()
+        ).orElseThrow(
+                () -> new RuntimeException(
+                        "Producto no encontrado: "
+                                + request.getProductoId()
+                )
+        );
+
 
         Stock stock = Stock.builder()
 
-                .empresa(
-                        empresaRepository.findById(
-                                request.getEmpresaId()
-                        ).orElseThrow()
-                )
+                .empresa(empresa)
 
-                .sucursal(
-                        sucursalRepository.findById(
-                                request.getSucursalId()
-                        ).orElseThrow()
-                )
+                .sucursal(sucursal)
 
-                .producto(
-                        productoRepository.findById(
-                                request.getProductoId()
-                        ).orElseThrow()
-                )
+                .producto(producto)
 
                 .cantidad(
                         request.getCantidad()
@@ -86,8 +108,11 @@ public class StockServiceImpl implements StockService {
                 .build();
 
 
+        Stock guardado = repository.save(stock);
+
+
         return mapper.toResponse(
-                repository.save(stock)
+                guardado
         );
 
     }
@@ -306,6 +331,25 @@ public class StockServiceImpl implements StockService {
 
 
         movimientoRepository.save(movimiento);
+
+    }
+
+    @Override
+    public List<StockResponse> bajoStock() {
+
+
+        return repository
+                .findAll()
+                .stream()
+
+                .filter(
+                        s -> s.getCantidad()
+                                <= s.getStockMinimo()
+                )
+
+                .map(mapper::toResponse)
+
+                .toList();
 
     }
 

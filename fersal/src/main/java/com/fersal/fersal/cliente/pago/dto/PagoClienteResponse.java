@@ -14,23 +14,20 @@ import java.util.UUID;
 @Builder
 public class PagoClienteResponse {
 
-
     private UUID id;
-
 
     private UUID clienteId;
 
-
     private String cliente;
 
+    private String apellido;
+
+    private String telefono;
 
     private BigDecimal monto;
 
-
     private LocalDateTime fechaPago;
 
-
     private String observacion;
-
 
 }

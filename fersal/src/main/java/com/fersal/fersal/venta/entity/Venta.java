@@ -3,12 +3,9 @@ package com.fersal.fersal.venta.entity;
 
 import com.fersal.fersal.cliente.entity.Cliente;
 import com.fersal.fersal.empresa.entity.Empresa;
-import com.fersal.fersal.sucursal.entity.Sucursal;
 import com.fersal.fersal.security.entity.Usuario;
-
-
+import com.fersal.fersal.sucursal.entity.Sucursal;
 import jakarta.persistence.*;
-
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -66,6 +63,10 @@ public class Venta {
     private BigDecimal total;
 
 
+    /**
+     * PAGADA
+     * PENDIENTE DE PAGO
+     */
     private String estado;
 
 
@@ -75,16 +76,30 @@ public class Venta {
 
     private String observacion;
 
+    @Column(length = 500)
+    private String motivoAnulacion;
 
     private LocalDateTime fecha;
+
+    private LocalDateTime fechaAnulacion;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_anulacion_id")
+    private Usuario usuarioAnulacion;
+
+
+    @Column(name = "fecha_vencimiento")
+    private LocalDateTime fechaVencimiento;
 
 
     @OneToMany(
             mappedBy = "venta",
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    private List<DetalleVenta> detalles =
-            new ArrayList<>();
+    @Builder.Default
+    private List<DetalleVenta> detalles = new ArrayList<>();
 
 
     @PrePersist
@@ -92,10 +107,26 @@ public class Venta {
 
         fecha = LocalDateTime.now();
 
-        estado = "PAGADA";
 
-        if (descuento == null)
+        if (descuento == null) {
             descuento = BigDecimal.ZERO;
+        }
+
+
+        if (estado == null) {
+
+            if ("CREDITO".equalsIgnoreCase(tipoPago)
+                    || "FIADO".equalsIgnoreCase(tipoPago)) {
+
+                estado = "PENDIENTE DE PAGO";
+
+            } else {
+
+                estado = "PAGADA";
+
+            }
+
+        }
 
     }
 

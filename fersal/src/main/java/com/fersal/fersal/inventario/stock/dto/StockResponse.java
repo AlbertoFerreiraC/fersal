@@ -4,7 +4,6 @@ package com.fersal.fersal.inventario.stock.dto;
 import lombok.Builder;
 import lombok.Data;
 
-
 import java.util.UUID;
 
 
@@ -14,6 +13,9 @@ public class StockResponse {
 
 
     private UUID id;
+
+
+    private UUID empresaId;
 
 
     private UUID sucursalId;

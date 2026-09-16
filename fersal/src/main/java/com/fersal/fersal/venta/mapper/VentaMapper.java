@@ -1,12 +1,10 @@
 package com.fersal.fersal.venta.mapper;
 
 
-import com.fersal.fersal.venta.dto.*;
-import com.fersal.fersal.venta.entity.*;
-
-
+import com.fersal.fersal.venta.dto.DetalleVentaResponse;
+import com.fersal.fersal.venta.dto.VentaResponse;
+import com.fersal.fersal.venta.entity.Venta;
 import org.springframework.stereotype.Component;
-
 
 @Component
 public class VentaMapper {
@@ -29,6 +27,44 @@ public class VentaMapper {
                                 : "Consumidor Final"
                 )
 
+                .documento(
+                        venta.getCliente() != null
+                                ? venta.getCliente().getDocumento()
+                                : null
+                )
+
+                .telefono(
+                        venta.getCliente() != null
+                                ? venta.getCliente().getTelefono()
+                                : null
+                )
+
+                .direccion(
+                        venta.getCliente() != null
+                                ? venta.getCliente().getDireccion()
+                                : null
+                )
+
+                .empresa(
+                        venta.getEmpresa().getNombre()
+                )
+
+                .empresaRuc(
+                        venta.getEmpresa().getRuc()
+                )
+
+                .empresaTelefono(
+                        venta.getEmpresa().getTelefono()
+                )
+
+                .fecha(
+                        venta.getFecha().toString()
+                )
+
+                .observacion(
+                        venta.getObservacion()
+                )
+
                 .total(
                         venta.getTotal()
                 )
@@ -45,7 +81,6 @@ public class VentaMapper {
                         venta.getDetalles()
                                 .stream()
                                 .map(detalle ->
-
                                         DetalleVentaResponse.builder()
 
                                                 .productoId(
@@ -69,14 +104,24 @@ public class VentaMapper {
                                                 )
 
                                                 .build()
-
                                 )
                                 .toList()
+                )
+
+                .motivoAnulacion(
+                        venta.getMotivoAnulacion()
+                )
+
+                .fechaAnulacion(
+                        venta.getFechaAnulacion() != null
+                                ? venta.getFechaAnulacion().toString()
+                                : null
                 )
 
                 .build();
 
     }
+
 
 
 }

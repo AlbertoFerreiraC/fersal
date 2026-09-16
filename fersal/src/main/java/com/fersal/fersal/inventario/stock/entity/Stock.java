@@ -1,15 +1,11 @@
 package com.fersal.fersal.inventario.stock.entity;
 
 
+import com.fersal.fersal.catalogo.producto.entity.Producto;
 import com.fersal.fersal.empresa.entity.Empresa;
 import com.fersal.fersal.sucursal.entity.Sucursal;
-import com.fersal.fersal.catalogo.producto.entity.Producto;
-
-
 import jakarta.persistence.*;
-
 import lombok.*;
-
 
 import java.util.UUID;
 
@@ -42,12 +38,12 @@ public class Stock {
     private Empresa empresa;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sucursal_id")
     private Sucursal sucursal;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "producto_id")
     private Producto producto;
 

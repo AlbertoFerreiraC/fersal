@@ -13,6 +13,9 @@ public class LoginResponse {
     private String token;
 
 
+    private String usuarioId;
+
+
     private String email;
 
 
@@ -23,5 +26,12 @@ public class LoginResponse {
 
 
     private String empresaNombre;
+
+
+    private String sucursalId;
+
+
+    private String sucursalNombre;
+
 
 }

@@ -22,5 +22,10 @@ public interface VentaService {
             UUID id
     );
 
+    VentaResponse anular(
+            UUID id,
+            UUID usuarioId,
+            String motivo
+    );
 
 }

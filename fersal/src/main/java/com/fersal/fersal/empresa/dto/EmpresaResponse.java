@@ -31,4 +31,6 @@ public class EmpresaResponse {
 
     private LocalDateTime updatedAt;
 
+    private String logoUrl;
+
 }

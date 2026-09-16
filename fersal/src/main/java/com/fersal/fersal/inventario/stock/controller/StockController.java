@@ -87,4 +87,13 @@ public class StockController {
 
     }
 
+    @GetMapping("/bajo")
+    public ResponseEntity<List<StockResponse>> bajoStock() {
+
+        return ResponseEntity.ok(
+                service.bajoStock()
+        );
+
+    }
+
 }

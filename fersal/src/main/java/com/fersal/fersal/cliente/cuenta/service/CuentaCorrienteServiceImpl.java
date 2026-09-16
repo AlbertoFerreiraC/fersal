@@ -54,6 +54,14 @@ public class CuentaCorrienteServiceImpl
                         cuenta.getCliente().getNombre()
                 )
 
+                .apellido(
+                        cuenta.getCliente().getApellido()
+                )
+
+                .telefono(
+                        cuenta.getCliente().getTelefono()
+                )
+
                 .saldo(
                         cuenta.getSaldo()
                 )

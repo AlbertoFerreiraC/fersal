@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -33,6 +34,10 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
 
+        System.out.println(
+                new BCryptPasswordEncoder()
+                        .encode("123456")
+        );
 
         authenticationManager.authenticate(
 
@@ -47,36 +52,13 @@ public class AuthService {
         );
 
 
-        Usuario usuario =
-                usuarioRepository.findByEmail(
-                                request.getEmail()
-                        )
-                        .orElseThrow();
+        Usuario usuario = usuarioRepository.findByEmail(request.getEmail()).orElseThrow();
 
 
-        String token =
-                jwtService.generarToken(
-                        usuario.getEmail()
-                );
+        String token = jwtService.generarToken(usuario.getEmail());
 
 
-        return LoginResponse.builder()
-
-                .token(token)
-
-                .email(usuario.getEmail())
-
-                .name(usuario.getNombre())
-
-                .empresaId(
-                        usuario.getEmpresa().getId().toString()
-                )
-
-                .empresaNombre(
-                        usuario.getEmpresa().getNombre()
-                )
-
-                .build();
+        return construirRespuesta(usuario, token);
 
     }
 
@@ -84,34 +66,50 @@ public class AuthService {
     public LoginResponse biometricLogin(String email) {
 
 
-        Usuario usuario =
-                usuarioRepository.findByEmail(email)
-                        .orElseThrow();
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow();
 
 
-        String token =
-                jwtService.generarToken(
-                        usuario.getEmail()
-                );
+        String token = jwtService.generarToken(usuario.getEmail());
+
+
+        return construirRespuesta(usuario, token);
+
+
+    }
+
+
+    private LoginResponse construirRespuesta(Usuario usuario, String token) {
 
 
         return LoginResponse.builder()
 
+
                 .token(token)
+
+
+                .usuarioId(usuario.getId().toString())
+
 
                 .email(usuario.getEmail())
 
+
                 .name(usuario.getNombre())
 
-                .empresaId(
-                        usuario.getEmpresa().getId().toString()
-                )
 
-                .empresaNombre(
-                        usuario.getEmpresa().getNombre()
-                )
+                .empresaId(usuario.getEmpresa().getId().toString())
+
+
+                .empresaNombre(usuario.getEmpresa().getNombre())
+
+
+                .sucursalId(usuario.getSucursal() != null ? usuario.getSucursal().getId().toString() : null)
+
+
+                .sucursalNombre(usuario.getSucursal() != null ? usuario.getSucursal().getNombre() : null)
+
 
                 .build();
+
 
     }
 

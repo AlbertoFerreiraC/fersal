@@ -2,6 +2,7 @@ package com.fersal.fersal.empresa.entity;
 
 
 import jakarta.persistence.*;
+
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,38 +13,37 @@ import java.util.UUID;
 @Table(name = "empresas")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Empresa {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
     private UUID id;
 
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false)
     private String nombre;
 
 
-    @Column(length = 30)
     private String ruc;
 
 
-    @Column(length = 30)
     private String telefono;
 
 
-    @Column(length = 150)
     private String email;
 
 
-    @Column(columnDefinition = "TEXT")
     private String direccion;
 
 
-    private Boolean activo = true;
+    private String sitioWeb;
+
+
+    private Boolean activo;
 
 
     private LocalDateTime createdAt;
@@ -52,11 +52,18 @@ public class Empresa {
     private LocalDateTime updatedAt;
 
 
+    // NUEVO
+    @Column(name = "logo_url")
+    private String logoUrl;
+
+
+
     @PrePersist
     public void prePersist() {
 
         createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
+
+        activo = true;
 
     }
 

@@ -25,13 +25,19 @@ public interface StockService {
     );
 
 
-    StockResponse buscar(UUID id);
+    List<StockResponse> bajoStock();
+
+
+    StockResponse buscar(
+            UUID id
+    );
 
 
     StockResponse actualizar(
             UUID id,
             StockRequest request
     );
+
 
     void descontarStock(
             UUID empresaId,

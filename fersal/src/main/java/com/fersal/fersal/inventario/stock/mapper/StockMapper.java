@@ -19,7 +19,13 @@ public class StockMapper {
 
         return StockResponse.builder()
 
-                .id(s.getId())
+                .id(
+                        s.getId()
+                )
+
+                .empresaId(
+                        s.getEmpresa().getId()
+                )
 
                 .sucursalId(
                         s.getSucursal().getId()
@@ -46,7 +52,6 @@ public class StockMapper {
                 )
 
                 .build();
-
 
     }
 

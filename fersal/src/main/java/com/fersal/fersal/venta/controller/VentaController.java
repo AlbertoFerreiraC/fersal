@@ -1,19 +1,16 @@
 package com.fersal.fersal.venta.controller;
 
 
-import com.fersal.fersal.venta.dto.*;
+import com.fersal.fersal.venta.comprobante.dto.ComprobanteResponse;
+import com.fersal.fersal.venta.comprobante.service.ComprobanteService;
+import com.fersal.fersal.venta.dto.AnularVentaRequest;
+import com.fersal.fersal.venta.dto.VentaRequest;
+import com.fersal.fersal.venta.dto.VentaResponse;
 import com.fersal.fersal.venta.service.VentaService;
-
-
 import lombok.RequiredArgsConstructor;
-
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +23,9 @@ public class VentaController {
 
 
     private final VentaService service;
+
+
+    private final ComprobanteService comprobanteService;
 
 
     @PostMapping
@@ -63,5 +63,35 @@ public class VentaController {
 
     }
 
+
+    @GetMapping("/{id}/comprobante")
+    public ResponseEntity<ComprobanteResponse> comprobante(
+            @PathVariable UUID id
+    ) {
+
+
+        return ResponseEntity.ok(
+                comprobanteService.generar(id)
+        );
+
+    }
+
+
+    @PutMapping("/{id}/anular")
+    public ResponseEntity<VentaResponse> anular(
+            @PathVariable UUID id,
+            @RequestParam UUID usuarioId,
+            @RequestBody AnularVentaRequest request
+    ) {
+
+        return ResponseEntity.ok(
+                service.anular(
+                        id,
+                        usuarioId,
+                        request.getMotivo()
+                )
+        );
+
+    }
 
 }
