@@ -10,6 +10,7 @@ import com.fersal.fersal.compra.compra.repository.CuentaPorPagarRepository;
 import com.fersal.fersal.compra.dto.CompraRequest;
 import com.fersal.fersal.compra.dto.CompraResponse;
 import com.fersal.fersal.compra.entity.Compra;
+import com.fersal.fersal.compra.entity.CuentaPorPagar;
 import com.fersal.fersal.compra.entity.DetalleCompra;
 import com.fersal.fersal.compra.repository.CompraRepository;
 import com.fersal.fersal.empresa.entity.Empresa;
@@ -117,7 +118,7 @@ public class CompraServiceImpl implements CompraService {
                     .descripcion("Pago Compra Fac. " + (request.getNumeroFactura() != null ? request.getNumeroFactura() : ""))
                     .build());
         } else if ("CREDITO".equalsIgnoreCase(request.getCondicionPago())) {
-            cuentaPorPagarRepository.save(com.fersal.fersal.compra.cuenta.entity.CuentaPorPagarDetalle.builder()
+            cuentaPorPagarRepository.save(CuentaPorPagar.builder()
                     .empresa(empresa)
                     .proveedor(proveedor)
                     .compra(compraGuardada)

@@ -1,4 +1,4 @@
-package com.fersal.fersal.compra.cuenta.entity;
+package com.fersal.fersal.compra.entity;
 
 import com.fersal.fersal.catalogo.proveedor.entity.Proveedor;
 import com.fersal.fersal.compra.entity.Compra;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CuentaPorPagarDetalle {
+public class CuentaPorPagar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
