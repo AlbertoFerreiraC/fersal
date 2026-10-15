@@ -17,7 +17,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CuentaPorPagar {
+public class CuentaPorPagarDetalle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
