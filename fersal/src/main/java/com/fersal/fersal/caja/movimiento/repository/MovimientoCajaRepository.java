@@ -1,18 +1,15 @@
 package com.fersal.fersal.caja.movimiento.repository;
 
-
 import com.fersal.fersal.caja.movimiento.entity.MovimientoCaja;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
-
-public interface MovimientoCajaRepository
-        extends JpaRepository<MovimientoCaja, UUID> {
-
+public interface MovimientoCajaRepository extends JpaRepository<MovimientoCaja, UUID> {
 
     @Query("""
             SELECT COALESCE(SUM(m.monto), 0)
@@ -25,4 +22,17 @@ public interface MovimientoCajaRepository
             @Param("tipo") String tipo
     );
 
+    List<MovimientoCaja> findAllByOrderByFechaDesc();
+
+    List<MovimientoCaja> findByEmpresaIdOrderByFechaDesc(UUID empresaId);
+
+    List<MovimientoCaja> findByEmpresaIdAndSucursalIdOrderByFechaDesc(UUID empresaId, UUID sucursalId);
+
+    List<MovimientoCaja> findByEmpresaIdAndSucursalIdAndUsuarioIdOrderByFechaDesc(
+            UUID empresaId,
+            UUID sucursalId,
+            UUID usuarioId
+    );
+
+    List<MovimientoCaja> findBySucursalIdOrderByFechaDesc(UUID sucursalId);
 }

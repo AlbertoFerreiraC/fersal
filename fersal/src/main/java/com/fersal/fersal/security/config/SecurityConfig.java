@@ -38,9 +38,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http
-    ) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 
         http
@@ -48,32 +46,19 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
 
 
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
-                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/api/usuarios",
-                                "/uploads/**"
-                        )
-                        .permitAll()
+                        .requestMatchers("/api/auth/**", "/api/usuarios", "/uploads/**").permitAll()
 
-                        .anyRequest()
-                        .authenticated()
+                        .anyRequest().authenticated()
 
                 )
 
 
-                .addFilterBefore(
-                        jwtFilter,
-                        UsernamePasswordAuthenticationFilter.class
-                );
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();
@@ -90,10 +75,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration
-    )
-            throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 
 
         return configuration.getAuthenticationManager();

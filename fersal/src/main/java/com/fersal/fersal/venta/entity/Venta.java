@@ -93,11 +93,7 @@ public class Venta {
     private LocalDateTime fechaVencimiento;
 
 
-    @OneToMany(
-            mappedBy = "venta",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<DetalleVenta> detalles = new ArrayList<>();
 
@@ -115,8 +111,7 @@ public class Venta {
 
         if (estado == null) {
 
-            if ("CREDITO".equalsIgnoreCase(tipoPago)
-                    || "FIADO".equalsIgnoreCase(tipoPago)) {
+            if ("CREDITO".equalsIgnoreCase(tipoPago) || "FIADO".equalsIgnoreCase(tipoPago)) {
 
                 estado = "PENDIENTE DE PAGO";
 

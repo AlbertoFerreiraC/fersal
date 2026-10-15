@@ -3,30 +3,16 @@ package com.fersal.fersal.security.service;
 
 import com.fersal.fersal.empresa.entity.Empresa;
 import com.fersal.fersal.empresa.repository.EmpresaRepository;
-
-
 import com.fersal.fersal.security.dto.UsuarioRequest;
 import com.fersal.fersal.security.dto.UsuarioResponse;
-
-
 import com.fersal.fersal.security.entity.Rol;
 import com.fersal.fersal.security.entity.Usuario;
-
-
 import com.fersal.fersal.security.repository.RolRepository;
 import com.fersal.fersal.security.repository.UsuarioRepository;
-
-
-import com.fersal.fersal.exception.ResourceNotFoundException;
-
-
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
-
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.UUID;
@@ -139,6 +125,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     }
 
+    @Override
+    @Transactional
+    public void actualizarFcmToken(UUID id, String token) {
+        usuarioRepository.findById(id).ifPresent(usuario -> {
+            usuario.setFcmToken(token);
+            usuarioRepository.save(usuario);
+        });
+    }
 
     private UsuarioResponse convertir(
             Usuario usuario

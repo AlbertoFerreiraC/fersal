@@ -24,26 +24,16 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
-            @RequestBody LoginRequest request
-    ) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
 
-        return ResponseEntity.ok(
-                authService.login(request)
-        );
+        return ResponseEntity.ok(authService.login(request));
 
     }
 
     @PostMapping("/biometric")
-    public ResponseEntity<LoginResponse> biometric(
-            @RequestBody BiometricRequest request
-    ) {
+    public ResponseEntity<LoginResponse> biometric(@RequestBody BiometricRequest request) {
 
-        return ResponseEntity.ok(
-                authService.biometricLogin(
-                        request.getEmail()
-                )
-        );
+        return ResponseEntity.ok(authService.biometricLogin(request.getEmail()));
 
     }
 

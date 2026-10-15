@@ -40,16 +40,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
-    )
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
 
-        final String authHeader =
-                request.getHeader("Authorization");
+        final String authHeader = request.getHeader("Authorization");
 
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -61,50 +55,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
 
-        final String jwt =
-                authHeader.substring(7);
+        final String jwt = authHeader.substring(7);
 
 
         try {
 
 
-            final String email =
-                    jwtService.extraerEmail(jwt);
+            final String email = jwtService.extraerEmail(jwt);
 
 
-            if (
-                    email != null &&
-                            SecurityContextHolder
-                                    .getContext()
-                                    .getAuthentication() == null
-            ) {
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
 
-                UserDetails userDetails =
-                        userDetailsService
-                                .loadUserByUsername(email);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
 
                 if (jwtService.validarToken(jwt)) {
 
 
-                    UsernamePasswordAuthenticationToken authToken =
-                            new UsernamePasswordAuthenticationToken(
-                                    userDetails,
-                                    null,
-                                    userDetails.getAuthorities()
-                            );
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
 
-                    authToken.setDetails(
-                            new WebAuthenticationDetailsSource()
-                                    .buildDetails(request)
-                    );
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
 
-                    SecurityContextHolder
-                            .getContext()
-                            .setAuthentication(authToken);
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
 
 
                 }
@@ -125,19 +100,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.clearContext();
 
 
-            response.setStatus(
-                    HttpServletResponse.SC_UNAUTHORIZED
-            );
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
 
-            response.setContentType(
-                    "application/json"
-            );
+            response.setContentType("application/json");
 
 
-            response.getWriter().write(
-                    "{\"error\":\"TOKEN_EXPIRED\",\"message\":\"La sesión ha expirado\"}"
-            );
+            response.getWriter().write("{\"error\":\"TOKEN_EXPIRED\",\"message\":\"La sesión ha expirado\"}");
 
 
         } catch (Exception e) {
@@ -150,23 +119,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             SecurityContextHolder.clearContext();
 
 
-            response.setStatus(
-                    HttpServletResponse.SC_UNAUTHORIZED
-            );
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
 
-            response.setContentType(
-                    "application/json"
-            );
+            response.setContentType("application/json");
 
 
-            response.getWriter().write(
-                    "{\"error\":\"INVALID_TOKEN\",\"message\":\""
-                            + e.getClass().getSimpleName()
-                            + ": "
-                            + e.getMessage()
-                            + "\"}"
-            );
+            response.getWriter().write("{\"error\":\"INVALID_TOKEN\",\"message\":\"" + e.getClass().getSimpleName() + ": " + e.getMessage() + "\"}");
 
 
         }

@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component;
 public class VentaMapper {
 
 
-    public VentaResponse toResponse(
-            Venta venta
-    ) {
+    public VentaResponse toResponse(Venta venta) {
 
 
         return VentaResponse.builder()
@@ -21,107 +19,51 @@ public class VentaMapper {
 
                 .numero(venta.getNumero())
 
-                .cliente(
-                        venta.getCliente() != null
-                                ? venta.getCliente().getNombre()
-                                : "Consumidor Final"
-                )
+                .cliente(venta.getCliente() != null ? venta.getCliente().getNombre() : "Consumidor Final")
 
-                .documento(
-                        venta.getCliente() != null
-                                ? venta.getCliente().getDocumento()
-                                : null
-                )
+                .documento(venta.getCliente() != null ? venta.getCliente().getDocumento() : null)
 
-                .telefono(
-                        venta.getCliente() != null
-                                ? venta.getCliente().getTelefono()
-                                : null
-                )
+                .telefono(venta.getCliente() != null ? venta.getCliente().getTelefono() : null)
 
-                .direccion(
-                        venta.getCliente() != null
-                                ? venta.getCliente().getDireccion()
-                                : null
-                )
+                .direccion(venta.getCliente() != null ? venta.getCliente().getDireccion() : null)
 
-                .empresa(
-                        venta.getEmpresa().getNombre()
-                )
+                .empresa(venta.getEmpresa().getNombre())
 
-                .empresaRuc(
-                        venta.getEmpresa().getRuc()
-                )
+                .empresaRuc(venta.getEmpresa().getRuc())
 
-                .empresaTelefono(
-                        venta.getEmpresa().getTelefono()
-                )
+                .empresaTelefono(venta.getEmpresa().getTelefono())
 
-                .fecha(
-                        venta.getFecha().toString()
-                )
+                .fecha(venta.getFecha().toString())
 
-                .observacion(
-                        venta.getObservacion()
-                )
+                .observacion(venta.getObservacion())
 
-                .total(
-                        venta.getTotal()
-                )
+                .total(venta.getTotal())
 
-                .estado(
-                        venta.getEstado()
-                )
+                .estado(venta.getEstado())
 
-                .tipoPago(
-                        venta.getTipoPago()
-                )
+                .tipoPago(venta.getTipoPago())
 
-                .detalles(
-                        venta.getDetalles()
-                                .stream()
-                                .map(detalle ->
-                                        DetalleVentaResponse.builder()
+                .detalles(venta.getDetalles().stream().map(detalle -> DetalleVentaResponse.builder()
 
-                                                .productoId(
-                                                        detalle.getProducto().getId()
-                                                )
+                        .productoId(detalle.getProducto().getId())
 
-                                                .producto(
-                                                        detalle.getProducto().getNombre()
-                                                )
+                        .producto(detalle.getProducto().getNombre())
 
-                                                .cantidad(
-                                                        detalle.getCantidad()
-                                                )
+                        .cantidad(detalle.getCantidad())
 
-                                                .precio(
-                                                        detalle.getPrecioUnitario()
-                                                )
+                        .precio(detalle.getPrecioUnitario())
 
-                                                .subtotal(
-                                                        detalle.getSubtotal()
-                                                )
+                        .subtotal(detalle.getSubtotal())
 
-                                                .build()
-                                )
-                                .toList()
-                )
+                        .build()).toList())
 
-                .motivoAnulacion(
-                        venta.getMotivoAnulacion()
-                )
+                .motivoAnulacion(venta.getMotivoAnulacion())
 
-                .fechaAnulacion(
-                        venta.getFechaAnulacion() != null
-                                ? venta.getFechaAnulacion().toString()
-                                : null
-                )
+                .fechaAnulacion(venta.getFechaAnulacion() != null ? venta.getFechaAnulacion().toString() : null)
 
                 .build();
 
     }
-
 
 
 }
